@@ -7,8 +7,10 @@ import WSBLogo from '../assets/WSBLogo.png'; // Import the WSB logo
 const NavBar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoginScreenOpen, setIsLoginScreenOpen] = useState(false);
+  const [isRegisterScreenOpen, setIsRegisterScreenOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const loginRef = useRef<HTMLDivElement>(null);
+  const registerRef = useRef<HTMLDivElement>(null);
 
   // Function to toggle mobile menu
   const toggleMobileMenu = () => {
@@ -20,6 +22,11 @@ const NavBar: React.FC = () => {
     setIsLoginScreenOpen(prev => !prev); // Toggle the state
   };
 
+  // Function to toggle register screen
+  const toggleRegisterScreen = () => {
+    setIsRegisterScreenOpen(prev => !prev); // Toggle the state
+  };
+
   // Close menu when clicking outside
   const handleOutsideClick = (event: MouseEvent) => {
     if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -27,6 +34,9 @@ const NavBar: React.FC = () => {
     }
     if (loginRef.current && !loginRef.current.contains(event.target as Node)) {
       setIsLoginScreenOpen(false);
+    }
+    if (registerRef.current && !registerRef.current.contains(event.target as Node)) {
+      setIsRegisterScreenOpen(false);
     }
   };
 
@@ -111,12 +121,13 @@ const NavBar: React.FC = () => {
         </div>
       </div>
       {/* Overlay */}
-      {(isMobileMenuOpen || isLoginScreenOpen) && (
+      {(isMobileMenuOpen || isLoginScreenOpen || isRegisterScreenOpen) && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-10"
           onClick={() => {
             setIsMobileMenuOpen(false);
             setIsLoginScreenOpen(false);
+            setIsRegisterScreenOpen(false);
           }}
         />
       )}
@@ -153,45 +164,129 @@ const NavBar: React.FC = () => {
       {/* Login Screen (Hidden by Default) */}
       <div
         ref={loginRef}
-        className={`fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-95 z-20 transform ${
+        className={`fixed inset-0 flex items-center justify-center z-20 transform ${
           isLoginScreenOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         style={{ transition: 'transform 0.3s ease' }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-white text-gray-900 p-8 rounded-lg shadow-lg w-80" onClick={(e) => e.stopPropagation()}>
-          <h2 className="text-2xl mb-4">Login</h2>
+        <div className="bg-white p-12 rounded-lg shadow-lg w-96" onClick={(e) => e.stopPropagation()}>
+          <button
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl" // Increased font size and improved visibility
+            onClick={() => setIsLoginScreenOpen(false)}
+          >
+            &times;
+          </button>
+          <h2 className="text-black text-3xl mb-6">Login</h2>
           <form>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1" htmlFor="email">
+            <div className="mb-6">
+              <label className="text-black block text-lg font-medium mb-2" htmlFor="email">
                 Email:
               </label>
               <input
                 type="email"
                 id="email"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md text-lg"
                 onClick={(e) => e.stopPropagation()}
               />
             </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1" htmlFor="password">
+            <div className="mb-6">
+              <label className="text-black block text-lg font-medium mb-2" htmlFor="password">
                 Password:
               </label>
               <input
                 type="password"
                 id="password"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md text-lg"
                 onClick={(e) => e.stopPropagation()}
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+              className="w-full bg-blue-600 text-white py-3 rounded-md text-lg hover:bg-blue-700"
               onClick={(e) => e.stopPropagation()}
             >
               Login
             </button>
           </form>
+          <div className="mt-6 text-center">
+            <p className="text-gray-600">
+              Don't have an account?{' '}
+              <button
+                className="text-blue-600 hover:underline"
+                onClick={() => {
+                  setIsLoginScreenOpen(false);
+                  setIsRegisterScreenOpen(true);
+                }}
+              >
+                Register here
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+      {/* Register Screen (Hidden by Default) */}
+      <div
+        ref={registerRef}
+        className={`fixed inset-0 flex items-center justify-center z-20 transform ${
+          isRegisterScreenOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        style={{ transition: 'transform 0.3s ease' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="bg-white p-12 rounded-lg shadow-lg w-96" onClick={(e) => e.stopPropagation()}>
+          <button
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl" // Increased font size and improved visibility
+            onClick={() => setIsRegisterScreenOpen(false)}
+          >
+            &times;
+          </button>
+          <h2 className="text-black text-3xl mb-6">Register</h2>
+          <form>
+            <div className="mb-6">
+              <label className="text-black block text-lg font-medium mb-2" htmlFor="email">
+                Email:
+              </label>
+              <input
+                type="email"
+                id="email"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md text-lg"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
+            <div className="mb-6">
+              <label className="text-black block text-lg font-medium mb-2" htmlFor="password">
+                Password:
+              </label>
+              <input
+                type="password"
+                id="password"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md text-lg"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-3 rounded-md text-lg hover:bg-blue-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Register
+            </button>
+          </form>
+          <div className="mt-6 text-center">
+            <p className="text-gray-600">
+              Already have an account?{' '}
+              <button
+                className="text-blue-600 hover:underline"
+                onClick={() => {
+                  setIsRegisterScreenOpen(false);
+                  setIsLoginScreenOpen(true);
+                }}
+              >
+                Login here
+              </button>
+            </p>
+          </div>
         </div>
       </div>
     </nav>
