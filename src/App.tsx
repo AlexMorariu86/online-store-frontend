@@ -1,15 +1,27 @@
 // src/App.tsx
 import React from 'react';
-import NavBar from './components/NavBar';
-import ProductList from './components/product-list';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Index from './pages/Index';
+import Apparel from './pages/Apparel';
+import Skate from './pages/Skate';
+import Accessories from './pages/Accessories';
+import ShoppingCart from './pages/ShoppingCart';
+import NoPage from './pages/NoPage';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <NavBar />
-      <ProductList />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<Index />} />
+        <Route path="/index" element={<Index />} />
+        <Route path="/apparel" element={<Apparel />} />
+        <Route path="/skate" element={<Skate />} />
+        <Route path="/accessories" element={<Accessories />} />
+        <Route path="/shoppingcart" element={<ShoppingCart />} />
+        <Route path="*" element={<NoPage />} />
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
